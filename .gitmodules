@@ -1,0 +1,9 @@
+[submodule "Orchis-theme"]
+	path = Orchis-theme
+	url = https://github.com/vinceliuice/Orchis-theme
+[submodule "stylepak"]
+	path = stylepak
+	url = https://github.com/refi64/stylepak
+[submodule "ansible\\roles\\petermosmans.customize-gnome"]
+	path = ansible\\roles\\petermosmans.customize-gnome
+	url = https://github.com/PeterMosmans/ansible-role-customize-gnome
