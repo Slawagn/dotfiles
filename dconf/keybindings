@@ -32,7 +32,7 @@ restore-shortcuts=@as []
 
 [org/gnome/settings-daemon/plugins/media-keys]
 calculator=@as []
-custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/']
 email=['<Super>e']
 help=@as []
 screensaver=['<Super>Escape']
@@ -42,3 +42,23 @@ www=['<Super>w']
 binding='<Super>t'
 command='gnome-terminal'
 name='Launch GNOME Terminal'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1]
+binding='<Alt>Left'
+command='xdotool sleep 0.15 key Home'
+name='Simulate Home key'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2]
+binding='<Alt>Right'
+command='xdotool sleep 0.15 key End'
+name='Simulate End key'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3]
+binding='<Alt>Up'
+command='xdotool sleep 0.15 key Page_Up'
+name='Simulate Page Up key'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4]
+binding='<Alt>Down'
+command='xdotool sleep 0.15 key Page_Down'
+name='Simulate Page Down key'

@@ -184,5 +184,5 @@
     - at
     - geary
     - codium
-    - python3-pip
-    - autokey-gtk
+    - xdotool
+  
