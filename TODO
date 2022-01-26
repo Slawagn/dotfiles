@@ -1,0 +1,3 @@
+- Refactor ansible scripts
+  - Split configurations into system-wide and user-specific
+  - Host-specific configurations
