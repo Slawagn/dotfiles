@@ -186,3 +186,7 @@
     - codium
     - xdotool
   
+  - name: Restore Firefox profile
+    copy:
+      src: ../.mozilla
+      dest: ~/
