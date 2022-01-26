@@ -1,0 +1,58 @@
+[org/gnome/desktop/calendar]
+show-weekdate=true
+
+[org/gnome/desktop/input-sources]
+current=uint32 0
+mru-sources=[('xkb', 'us'), ('xkb', 'ru')]
+per-window=false
+sources=[('xkb', 'us'), ('xkb', 'ru')]
+xkb-options=['compose:rctrl']
+
+[org/gnome/desktop/interface]
+clock-show-seconds=false
+clock-show-weekday=true
+cursor-size=24
+cursor-theme='Adwaita'
+document-font-name='Cantarell 13'
+enable-animations=true
+font-antialiasing='grayscale'
+font-hinting='slight'
+font-name='Noto Sans 12'
+gtk-im-module='gtk-im-context-simple'
+gtk-theme='Orchis-red-dark'
+icon-theme='Adwaita'
+locate-pointer=false
+monospace-font-name='Source Code Pro 12'
+show-battery-percentage=false
+toolbar-style='text'
+toolkit-accessibility=false
+
+[org/gnome/desktop/privacy]
+disable-camera=true
+disable-microphone=true
+report-technical-problems=false
+
+[org/gnome/desktop/session]
+idle-delay=uint32 480
+
+[org/gnome/desktop/wm/preferences]
+button-layout='icon:close'
+titlebar-font='Cantarell Bold 13'
+
+[org/gnome/settings-daemon/plugins/power]
+power-button-action='hibernate'
+sleep-inactive-ac-timeout=3600
+sleep-inactive-ac-type='nothing'
+
+[org/gnome/system/location]
+enabled=false
+
+[org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-transparency-percent=6
+exit-action='close'
+font='Monospace 14'
+use-system-font=false
+use-transparent-background=true
+
+[org/gnome/gedit/preferences/editor]
+higlight-current-line=false
