@@ -55,4 +55,4 @@ use-system-font=false
 use-transparent-background=true
 
 [org/gnome/gedit/preferences/editor]
-higlight-current-line=false
+highlight-current-line=false
