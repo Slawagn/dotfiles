@@ -1,0 +1,188 @@
+- hosts: localhost
+  tasks:
+  - name: Disable Wayland
+    become: yes
+    ini_file:
+      path: /etc/gdm/custom.conf
+      section: daemon
+      option: "{{ item.option }}"
+      value: "{{ item.value }}"
+    with_items:
+    - { option: 'WaylandEnable', value: 'false' }
+    - { option: 'DefaultSession', value: 'gnome-xorg.desktop' }
+
+  - name: Install GNOME tweaks and extension apps
+    become: yes
+    package:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    with_items:
+      - 'gnome-extensions-app'
+      - 'gnome-tweaks'
+      - 'gnome-shell-extension-pop-shell'
+      - 'xprop'
+  
+  - name: Install GTK+ Theme
+    become: yes
+    block:
+      - name: Check if theme folder is present
+        stat: 
+          path: '/usr/share/themes/Orchis'
+        register: orchis
+      - name: Install build dependencies
+        package:
+          name: sassc
+          state: present
+      - name: Install Orchis
+        command: "../Orchis-theme/install.sh -t all --tweaks compact black"
+        when: not orchis.stat.exists
+
+  # - name: Reboot
+  #   reboot:
+
+  - name: Enable Pop!_OS' shell
+    block:
+    - name: Install extension
+      command: 'gnome-extensions enable pop-shell@system76.com'
+  
+  - name: Customize GNOME
+    include_role:
+      name: petermosmans.customize-gnome
+    vars:
+      gnome_user: 'slawagn'
+      gnome_extensions:
+        - id: 307   # dash-to-dock 
+          enable: yes
+        # - id: 4144  # vertical-overview 
+        #   enable: yes
+        - id: 3193  # blur-my-shell 
+          enable: yes
+        - id: 19    # user-themes
+          enable: yes
+        - id: 1287  # unite
+          enable: yes
+        - id: 3433  # fly-pie
+          enable: yes
+        - id: 4679  # burn-my-windows
+          enable: yes
+        - id: 2950  # compiz-alike-windows-effect
+          enable: yes
+        - id: 1446  # transparent-window-moving
+          enable: yes
+        - id: 4158  # gnome-4x-ui-improvements
+          enable: yes
+        - id: 3100  # maximize-to-empty-workspace
+          enable: yes
+        - id: 928   # transcodeappsearch 
+          enable: yes
+        - id: 3952  # workspace-indicator
+          enable: yes
+        - id: 3530  # true-color-invert
+          enable: yes
+        - id: 1287  # unite
+          enable: yes
+        - id: 3733  # tiling-assisstant
+          enable: no
+        - id: 1319  # gsconnect
+          enable: no
+        - id: 889   # background-logo
+          enable: no
+      gnome_files:
+      - src: ../Wallpapers
+        dest: ~/Pictures/
+      gnome_gsettings:
+      - schema: org.gnome.shell.extensions.user-theme
+        key: name
+        value: "'Orchis-red-dark'"
+      - schema: org.gnome.desktop.interface
+        key: gtk-theme
+        value: "'Orchis-red-dark'"
+      - schema: org.gnome.desktop.background
+        key: picture-uri
+        value: file:///home/{{ gnome_user }}/Pictures/Wallpapers/Virus.DOS.jpg
+
+  - name: Install stylepak dependencies
+    become: yes
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - ostree
+    - libappstream-glib
+  - name: Set flatpak theme
+    become: yes
+    command: ../stylepak/stylepak install-system
+    
+  - name: Load dconf dumps
+    shell: dconf load / < {{ item }}
+    with_items:
+    - ../dconf/system
+    - ../dconf/keybindings
+    - ../dconf/extensions
+
+  - name: Update flatpak repos
+    flatpak_remote:
+      name: flathub
+      state: present
+      flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo 
+      
+  - name: Disable remote flathub
+    become: yes
+    flatpak_remote:
+      name: flathub
+      state: absent
+  - name: Enable remote flathub
+    become: yes
+    flatpak_remote:
+      name: flathub
+      state: present
+      flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo 
+  - name: Install flatpaks
+    become: yes
+    flatpak:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - org.chromium.Chromium
+    - org.telegram.desktop
+    - org.gimp.GIMP
+
+
+  - name: Add rpm keys
+    become: yes
+    rpm_key:
+      state: present
+      key: "{{ item }}"
+    with_items:
+    - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
+  - name: Add rpm repos
+    become: yes
+    yum_repository:
+      name: "{{ item.name }}"
+      description: "{{ item.description }}"
+      baseurl: "{{ item.baseurl }}"
+      gpgkey: "{{ item.gpgkey }}"
+      enabled: yes
+      gpgcheck: yes
+      repo_gpgcheck: yes
+      metadata_expire: "1h"
+    with_items:
+    - { 
+        name: gitlab.com_paulcarroty_vscodium_repo,
+        description: download.vscodium.com,
+        baseurl: https://download.vscodium.com/rpms/,
+        gpgkey: https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/-/raw/master/pub.gpg
+      }
+  - name: Install packages
+    become: yes
+    package:
+      name: "{{ item }}"
+      state: present
+    with_items:
+    - htop
+    - at
+    - geary
+    - codium
+    - python3-pip
+    - autokey-gtk
