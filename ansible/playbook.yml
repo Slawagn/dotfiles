@@ -86,8 +86,6 @@
           enable: no
         - id: 1319  # gsconnect
           enable: no
-        - id: 889   # background-logo
-          enable: no
       gnome_files:
       - src: ../Wallpapers
         dest: ~/Pictures/
